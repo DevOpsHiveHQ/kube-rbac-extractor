@@ -1,0 +1,32 @@
+[
+  {
+    "groupVersion": "admissionregistration.k8s.io",
+    "kind": "MutatingAdmissionPolicy",
+    "name": "mutatingadmissionpolicies",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "admissionregistration.k8s.io",
+    "kind": "MutatingAdmissionPolicyBinding",
+    "name": "mutatingadmissionpolicybindings",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  }
+]

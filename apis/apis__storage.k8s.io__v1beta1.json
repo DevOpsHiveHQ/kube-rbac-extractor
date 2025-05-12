@@ -1,0 +1,17 @@
+[
+  {
+    "groupVersion": "storage.k8s.io",
+    "kind": "VolumeAttributesClass",
+    "name": "volumeattributesclasses",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  }
+]

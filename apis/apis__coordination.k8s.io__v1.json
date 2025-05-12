@@ -1,0 +1,17 @@
+[
+  {
+    "groupVersion": "coordination.k8s.io",
+    "kind": "Lease",
+    "name": "leases",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  }
+]

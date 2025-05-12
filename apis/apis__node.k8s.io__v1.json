@@ -1,0 +1,17 @@
+[
+  {
+    "groupVersion": "node.k8s.io",
+    "kind": "RuntimeClass",
+    "name": "runtimeclasses",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  }
+]

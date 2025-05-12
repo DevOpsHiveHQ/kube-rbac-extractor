@@ -1,0 +1,456 @@
+[
+  {
+    "groupVersion": "v1",
+    "kind": "Binding",
+    "name": "bindings",
+    "verbs": [
+      "create"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "ComponentStatus",
+    "name": "componentstatuses",
+    "verbs": [
+      "get",
+      "list"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "ConfigMap",
+    "name": "configmaps",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Endpoints",
+    "name": "endpoints",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Event",
+    "name": "events",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "LimitRange",
+    "name": "limitranges",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Namespace",
+    "name": "namespaces",
+    "verbs": [
+      "create",
+      "delete",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Namespace",
+    "name": "namespaces/finalize",
+    "verbs": [
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Namespace",
+    "name": "namespaces/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Node",
+    "name": "nodes",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "NodeProxyOptions",
+    "name": "nodes/proxy",
+    "verbs": [
+      "create",
+      "delete",
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Node",
+    "name": "nodes/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "PersistentVolumeClaim",
+    "name": "persistentvolumeclaims",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "PersistentVolumeClaim",
+    "name": "persistentvolumeclaims/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "PersistentVolume",
+    "name": "persistentvolumes",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "PersistentVolume",
+    "name": "persistentvolumes/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Pod",
+    "name": "pods",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "PodAttachOptions",
+    "name": "pods/attach",
+    "verbs": [
+      "create",
+      "get"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Binding",
+    "name": "pods/binding",
+    "verbs": [
+      "create"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Pod",
+    "name": "pods/ephemeralcontainers",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Eviction",
+    "name": "pods/eviction",
+    "verbs": [
+      "create"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "PodExecOptions",
+    "name": "pods/exec",
+    "verbs": [
+      "create",
+      "get"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Pod",
+    "name": "pods/log",
+    "verbs": [
+      "get"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "PodPortForwardOptions",
+    "name": "pods/portforward",
+    "verbs": [
+      "create",
+      "get"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "PodProxyOptions",
+    "name": "pods/proxy",
+    "verbs": [
+      "create",
+      "delete",
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Pod",
+    "name": "pods/resize",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Pod",
+    "name": "pods/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "PodTemplate",
+    "name": "podtemplates",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "ReplicationController",
+    "name": "replicationcontrollers",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Scale",
+    "name": "replicationcontrollers/scale",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "ReplicationController",
+    "name": "replicationcontrollers/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "ResourceQuota",
+    "name": "resourcequotas",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "ResourceQuota",
+    "name": "resourcequotas/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Secret",
+    "name": "secrets",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "ServiceAccount",
+    "name": "serviceaccounts",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "TokenRequest",
+    "name": "serviceaccounts/token",
+    "verbs": [
+      "create"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Service",
+    "name": "services",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "ServiceProxyOptions",
+    "name": "services/proxy",
+    "verbs": [
+      "create",
+      "delete",
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "v1",
+    "kind": "Service",
+    "name": "services/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  }
+]

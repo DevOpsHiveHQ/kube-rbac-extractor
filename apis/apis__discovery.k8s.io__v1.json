@@ -1,0 +1,17 @@
+[
+  {
+    "groupVersion": "discovery.k8s.io",
+    "kind": "EndpointSlice",
+    "name": "endpointslices",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "groupVersion": "rbac.authorization.k8s.io",
+    "kind": "ClusterRoleBinding",
+    "name": "clusterrolebindings",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "rbac.authorization.k8s.io",
+    "kind": "ClusterRole",
+    "name": "clusterroles",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "rbac.authorization.k8s.io",
+    "kind": "RoleBinding",
+    "name": "rolebindings",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "rbac.authorization.k8s.io",
+    "kind": "Role",
+    "name": "roles",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  }
+]

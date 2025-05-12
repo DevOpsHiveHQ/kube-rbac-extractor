@@ -1,0 +1,72 @@
+[
+  {
+    "groupVersion": "resource.k8s.io",
+    "kind": "DeviceClass",
+    "name": "deviceclasses",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "resource.k8s.io",
+    "kind": "ResourceClaim",
+    "name": "resourceclaims",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "resource.k8s.io",
+    "kind": "ResourceClaim",
+    "name": "resourceclaims/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "resource.k8s.io",
+    "kind": "ResourceClaimTemplate",
+    "name": "resourceclaimtemplates",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "resource.k8s.io",
+    "kind": "ResourceSlice",
+    "name": "resourceslices",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  }
+]

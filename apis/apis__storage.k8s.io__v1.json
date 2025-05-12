@@ -1,0 +1,87 @@
+[
+  {
+    "groupVersion": "storage.k8s.io",
+    "kind": "CSIDriver",
+    "name": "csidrivers",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "storage.k8s.io",
+    "kind": "CSINode",
+    "name": "csinodes",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "storage.k8s.io",
+    "kind": "CSIStorageCapacity",
+    "name": "csistoragecapacities",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "storage.k8s.io",
+    "kind": "StorageClass",
+    "name": "storageclasses",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "storage.k8s.io",
+    "kind": "VolumeAttachment",
+    "name": "volumeattachments",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "storage.k8s.io",
+    "kind": "VolumeAttachment",
+    "name": "volumeattachments/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  }
+]

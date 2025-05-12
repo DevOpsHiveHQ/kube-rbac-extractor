@@ -1,0 +1,72 @@
+[
+  {
+    "groupVersion": "admissionregistration.k8s.io",
+    "kind": "MutatingWebhookConfiguration",
+    "name": "mutatingwebhookconfigurations",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "admissionregistration.k8s.io",
+    "kind": "ValidatingAdmissionPolicy",
+    "name": "validatingadmissionpolicies",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "admissionregistration.k8s.io",
+    "kind": "ValidatingAdmissionPolicy",
+    "name": "validatingadmissionpolicies/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "admissionregistration.k8s.io",
+    "kind": "ValidatingAdmissionPolicyBinding",
+    "name": "validatingadmissionpolicybindings",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "admissionregistration.k8s.io",
+    "kind": "ValidatingWebhookConfiguration",
+    "name": "validatingwebhookconfigurations",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  }
+]

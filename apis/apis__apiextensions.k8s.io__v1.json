@@ -1,0 +1,27 @@
+[
+  {
+    "groupVersion": "apiextensions.k8s.io",
+    "kind": "CustomResourceDefinition",
+    "name": "customresourcedefinitions",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "apiextensions.k8s.io",
+    "kind": "CustomResourceDefinition",
+    "name": "customresourcedefinitions/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  }
+]

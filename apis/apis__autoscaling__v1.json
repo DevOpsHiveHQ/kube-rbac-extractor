@@ -1,0 +1,27 @@
+[
+  {
+    "groupVersion": "autoscaling",
+    "kind": "HorizontalPodAutoscaler",
+    "name": "horizontalpodautoscalers",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "autoscaling",
+    "kind": "HorizontalPodAutoscaler",
+    "name": "horizontalpodautoscalers/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "groupVersion": "internal.apiserver.k8s.io",
+    "kind": "StorageVersion",
+    "name": "storageversions",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "internal.apiserver.k8s.io",
+    "kind": "StorageVersion",
+    "name": "storageversions/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  }
+]

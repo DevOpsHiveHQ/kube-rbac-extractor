@@ -1,0 +1,18 @@
+[
+  {
+    "groupVersion": "authentication.k8s.io",
+    "kind": "SelfSubjectReview",
+    "name": "selfsubjectreviews",
+    "verbs": [
+      "create"
+    ]
+  },
+  {
+    "groupVersion": "authentication.k8s.io",
+    "kind": "TokenReview",
+    "name": "tokenreviews",
+    "verbs": [
+      "create"
+    ]
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "groupVersion": "networking.k8s.io",
+    "kind": "IPAddress",
+    "name": "ipaddresses",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "networking.k8s.io",
+    "kind": "ServiceCIDR",
+    "name": "servicecidrs",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "networking.k8s.io",
+    "kind": "ServiceCIDR",
+    "name": "servicecidrs/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  }
+]

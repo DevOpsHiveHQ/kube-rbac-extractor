@@ -1,0 +1,17 @@
+[
+  {
+    "groupVersion": "events.k8s.io",
+    "kind": "Event",
+    "name": "events",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  }
+]

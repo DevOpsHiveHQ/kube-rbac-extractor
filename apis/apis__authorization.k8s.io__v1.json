@@ -1,0 +1,34 @@
+[
+  {
+    "groupVersion": "authorization.k8s.io",
+    "kind": "LocalSubjectAccessReview",
+    "name": "localsubjectaccessreviews",
+    "verbs": [
+      "create"
+    ]
+  },
+  {
+    "groupVersion": "authorization.k8s.io",
+    "kind": "SelfSubjectAccessReview",
+    "name": "selfsubjectaccessreviews",
+    "verbs": [
+      "create"
+    ]
+  },
+  {
+    "groupVersion": "authorization.k8s.io",
+    "kind": "SelfSubjectRulesReview",
+    "name": "selfsubjectrulesreviews",
+    "verbs": [
+      "create"
+    ]
+  },
+  {
+    "groupVersion": "authorization.k8s.io",
+    "kind": "SubjectAccessReview",
+    "name": "subjectaccessreviews",
+    "verbs": [
+      "create"
+    ]
+  }
+]

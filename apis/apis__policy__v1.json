@@ -1,0 +1,27 @@
+[
+  {
+    "groupVersion": "policy",
+    "kind": "PodDisruptionBudget",
+    "name": "poddisruptionbudgets",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "policy",
+    "kind": "PodDisruptionBudget",
+    "name": "poddisruptionbudgets/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  }
+]

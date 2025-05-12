@@ -1,0 +1,27 @@
+[
+  {
+    "groupVersion": "apiregistration.k8s.io",
+    "kind": "APIService",
+    "name": "apiservices",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "apiregistration.k8s.io",
+    "kind": "APIService",
+    "name": "apiservices/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  }
+]

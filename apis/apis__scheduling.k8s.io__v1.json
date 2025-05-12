@@ -1,0 +1,17 @@
+[
+  {
+    "groupVersion": "scheduling.k8s.io",
+    "kind": "PriorityClass",
+    "name": "priorityclasses",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  }
+]

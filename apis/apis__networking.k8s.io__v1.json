@@ -1,0 +1,97 @@
+[
+  {
+    "groupVersion": "networking.k8s.io",
+    "kind": "IngressClass",
+    "name": "ingressclasses",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "networking.k8s.io",
+    "kind": "Ingress",
+    "name": "ingresses",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "networking.k8s.io",
+    "kind": "Ingress",
+    "name": "ingresses/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "networking.k8s.io",
+    "kind": "IPAddress",
+    "name": "ipaddresses",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "networking.k8s.io",
+    "kind": "NetworkPolicy",
+    "name": "networkpolicies",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "networking.k8s.io",
+    "kind": "ServiceCIDR",
+    "name": "servicecidrs",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "networking.k8s.io",
+    "kind": "ServiceCIDR",
+    "name": "servicecidrs/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  }
+]

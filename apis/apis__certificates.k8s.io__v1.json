@@ -1,0 +1,37 @@
+[
+  {
+    "groupVersion": "certificates.k8s.io",
+    "kind": "CertificateSigningRequest",
+    "name": "certificatesigningrequests",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "certificates.k8s.io",
+    "kind": "CertificateSigningRequest",
+    "name": "certificatesigningrequests/approval",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "certificates.k8s.io",
+    "kind": "CertificateSigningRequest",
+    "name": "certificatesigningrequests/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  }
+]

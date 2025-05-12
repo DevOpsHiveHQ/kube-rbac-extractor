@@ -1,0 +1,147 @@
+[
+  {
+    "groupVersion": "apps",
+    "kind": "ControllerRevision",
+    "name": "controllerrevisions",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "apps",
+    "kind": "DaemonSet",
+    "name": "daemonsets",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "apps",
+    "kind": "DaemonSet",
+    "name": "daemonsets/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "apps",
+    "kind": "Deployment",
+    "name": "deployments",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "apps",
+    "kind": "Scale",
+    "name": "deployments/scale",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "apps",
+    "kind": "Deployment",
+    "name": "deployments/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "apps",
+    "kind": "ReplicaSet",
+    "name": "replicasets",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "apps",
+    "kind": "Scale",
+    "name": "replicasets/scale",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "apps",
+    "kind": "ReplicaSet",
+    "name": "replicasets/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "apps",
+    "kind": "StatefulSet",
+    "name": "statefulsets",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "apps",
+    "kind": "Scale",
+    "name": "statefulsets/scale",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "apps",
+    "kind": "StatefulSet",
+    "name": "statefulsets/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  }
+]

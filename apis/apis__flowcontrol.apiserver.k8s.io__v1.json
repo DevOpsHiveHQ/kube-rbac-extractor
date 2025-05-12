@@ -1,0 +1,52 @@
+[
+  {
+    "groupVersion": "flowcontrol.apiserver.k8s.io",
+    "kind": "FlowSchema",
+    "name": "flowschemas",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "flowcontrol.apiserver.k8s.io",
+    "kind": "FlowSchema",
+    "name": "flowschemas/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "flowcontrol.apiserver.k8s.io",
+    "kind": "PriorityLevelConfiguration",
+    "name": "prioritylevelconfigurations",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "flowcontrol.apiserver.k8s.io",
+    "kind": "PriorityLevelConfiguration",
+    "name": "prioritylevelconfigurations/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  }
+]

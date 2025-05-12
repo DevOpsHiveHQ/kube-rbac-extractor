@@ -1,0 +1,52 @@
+[
+  {
+    "groupVersion": "batch",
+    "kind": "CronJob",
+    "name": "cronjobs",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "batch",
+    "kind": "CronJob",
+    "name": "cronjobs/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  },
+  {
+    "groupVersion": "batch",
+    "kind": "Job",
+    "name": "jobs",
+    "verbs": [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch"
+    ]
+  },
+  {
+    "groupVersion": "batch",
+    "kind": "Job",
+    "name": "jobs/status",
+    "verbs": [
+      "get",
+      "patch",
+      "update"
+    ]
+  }
+]
