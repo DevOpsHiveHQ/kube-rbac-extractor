@@ -104,6 +104,17 @@ rules:
     - watch
 ```
 
+## Using the Docker image
+
+You can build and run the docker image as follows:
+
+```shell
+docker build . -t kube-rbac-extractor
+
+helm template dev oci://registry-1.docker.io/bitnamicharts/postgresql | 
+  docker run --rm kube-rbac-extractor --access read --namespace dev --name developer-access
+```
+
 ## License
 
 Merger is an open-source software licensed under the MIT license. For more details, check the [LICENSE](LICENSE) file.
