@@ -15,43 +15,43 @@ import (
 //go:embed api_kinds_v1.json
 var schemaKindsJSON []byte
 
-type SchemaKindsRBAC struct {
+type schemaKindsRBAC struct {
 	GroupVersion string   `json:"groupVersion"`
 	Kind         string   `json:"kind"`
 	Name         string   `json:"name"`
 	Verbs        []string `json:"verbs"`
 }
 
-type Metadata struct {
+type metadata struct {
 	Name      string `yaml:"name"`
 	Namespace string `yaml:"namespace,omitempty"`
 }
 
-type RoleRule struct {
+type roleRule struct {
 	APIGroups     []string `yaml:"apiGroups"`
 	Resources     []string `yaml:"resources"`
 	ResourceNames []string `yaml:"resourceNames,omitempty"`
 	Verbs         []string `yaml:"verbs"`
 }
 
-type RoleDefinition struct {
+type roleDefinition struct {
 	APIVersion string     `yaml:"apiVersion"`
 	Kind       string     `yaml:"kind"`
-	Metadata   Metadata   `yaml:"metadata"`
-	Rules      []RoleRule `yaml:"rules"`
+	Metadata   metadata   `yaml:"metadata"`
+	Rules      []roleRule `yaml:"rules"`
 }
 
-type Subject struct {
+type roleBindingSubject struct {
 	Kind      string `yaml:"kind"`
 	Name      string `yaml:"name"`
 	Namespace string `yaml:"namespace,omitempty"`
 }
 
-type RoleBinding struct {
-	APIVersion string   `yaml:"apiVersion"`
-	Kind       string   `yaml:"kind"`
-	Metadata   Metadata `yaml:"metadata"`
-	Subjects   []Subject `yaml:"subjects"`
+type roleBinding struct {
+	APIVersion string               `yaml:"apiVersion"`
+	Kind       string               `yaml:"kind"`
+	Metadata   metadata             `yaml:"metadata"`
+	Subjects   []roleBindingSubject `yaml:"subjects"`
 	RoleRef    struct {
 		APIGroup string `yaml:"apiGroup"`
 		Kind     string `yaml:"kind"`
@@ -59,8 +59,8 @@ type RoleBinding struct {
 	} `yaml:"roleRef"`
 }
 
-func loadSchemaKindsRBAC(base []byte, extraPath string) ([]SchemaKindsRBAC, error) {
-	var combined []SchemaKindsRBAC
+func loadSchemaKindsRBAC(base []byte, extraPath string) ([]schemaKindsRBAC, error) {
+	var combined []schemaKindsRBAC
 
 	if err := json.Unmarshal(base, &combined); err != nil {
 		return nil, err
@@ -71,7 +71,7 @@ func loadSchemaKindsRBAC(base []byte, extraPath string) ([]SchemaKindsRBAC, erro
 		if err != nil {
 			return nil, fmt.Errorf("failed to read extra kinds RBAC schema file: %v", err)
 		}
-		var extra []SchemaKindsRBAC
+		var extra []schemaKindsRBAC
 		if err := json.Unmarshal(extraData, &extra); err != nil {
 			return nil, fmt.Errorf("failed to parse extra kinds RBAC schema file: %v", err)
 		}
@@ -124,35 +124,205 @@ func marshalYAMLWithIndent(v any) ([]byte, error) {
 	return []byte(adjustIndentation(out)), nil
 }
 
-func parseRoleBindingSubjects(input string) ([]Subject, error) {
-	var subjects []Subject
+func parseRoleBindingSubjects(input string) ([]roleBindingSubject, error) {
+	var subjects []roleBindingSubject
 	entries := strings.Split(input, ",")
 	for _, entry := range entries {
-		roleBindingSubject := strings.Split(entry, ":")
-		if len(roleBindingSubject) < 2 {
+		roleBindingSubjectParts := strings.Split(entry, ":")
+		if len(roleBindingSubjectParts) < 2 {
 			return nil, fmt.Errorf("invalid subject format: %s", entry)
 		}
-		kind := roleBindingSubject[0]
+		kind := roleBindingSubjectParts[0]
 		switch kind {
 		case "User", "Group":
-			subjects = append(subjects, Subject{
+			subjects = append(subjects, roleBindingSubject{
 				Kind: kind,
-				Name: roleBindingSubject[1],
+				Name: roleBindingSubjectParts[1],
 			})
 		case "ServiceAccount":
-			if len(roleBindingSubject) != 3 {
+			if len(roleBindingSubjectParts) != 3 {
 				return nil, fmt.Errorf("ServiceAccount requires format ServiceAccount:namespace:name")
 			}
-			subjects = append(subjects, Subject{
+			subjects = append(subjects, roleBindingSubject{
 				Kind:      "ServiceAccount",
-				Namespace: roleBindingSubject[1],
-				Name:      roleBindingSubject[2],
+				Namespace: roleBindingSubjectParts[1],
+				Name:      roleBindingSubjectParts[2],
 			})
 		default:
 			return nil, fmt.Errorf("unknown subject kind: %s", kind)
 		}
 	}
 	return subjects, nil
+}
+
+// extractManifestInfo extracts apiGroup, kind, resourceName from a manifest.
+func extractManifestInfo(manifest map[string]any) (apiGroup, kind, resourceName string, ok bool) {
+	apiVersionRaw, ok := manifest["apiVersion"].(string)
+	faildReturn := func() (string, string, string, bool) {
+		return "", "", "", false
+	}
+
+	if !ok {
+		return faildReturn()
+	}
+	apiGroup = strings.Split(apiVersionRaw, "/")[0]
+
+	kindRaw, ok := manifest["kind"].(string)
+	if !ok {
+		return faildReturn()
+	}
+
+	metadata, ok := manifest["metadata"].(map[string]any)
+	if !ok {
+		return faildReturn()
+	}
+
+	resourceName, _ = metadata["name"].(string)
+	return apiGroup, kindRaw, resourceName, true
+}
+
+// findKindEntry finds the matching schemaKindsRBAC entry for a given group and kind.
+func findKindEntry(sk []schemaKindsRBAC, apiGroup, kind string) (schemaKindsRBAC, bool) {
+	for _, entry := range sk {
+		if entry.GroupVersion == apiGroup && entry.Kind == kind {
+			return entry, true
+		}
+	}
+	return schemaKindsRBAC{}, false
+}
+
+// mergeVerbs merges new verbs into the rule's verbs, avoiding duplicates.
+func mergeVerbs(rule *roleRule, verbs []string) {
+	existingVerbs := make(map[string]bool)
+	for _, v := range rule.Verbs {
+		existingVerbs[v] = true
+	}
+	for _, v := range verbs {
+		if !existingVerbs[v] {
+			rule.Verbs = append(rule.Verbs, v)
+		}
+	}
+}
+
+func parseManifests(input string, sk []schemaKindsRBAC, access string, includeResourceNames bool) []roleRule {
+	docs := strings.Split(input, "---")
+	rulesMap := map[string]roleRule{}
+
+	for _, doc := range docs {
+		doc = strings.TrimSpace(doc)
+		if doc == "" {
+			continue
+		}
+
+		var manifest map[string]any
+		if unmarshalErr := yaml.Unmarshal([]byte(doc), &manifest); unmarshalErr != nil {
+			fmt.Fprintf(os.Stderr, "invalid YAML: %v\n", unmarshalErr)
+			continue
+		}
+
+		apiGroup, kindRaw, resourceName, ok := extractManifestInfo(manifest)
+		if !ok {
+			continue
+		}
+
+		entry, found := findKindEntry(sk, apiGroup, kindRaw)
+		if !found {
+			fmt.Fprintf(os.Stderr, "skipping unknown resource: %s %s\n", apiGroup, kindRaw)
+			continue
+		}
+
+		pluralName := entry.Name
+		verbs := getVerbsForAccessType(access, entry.Verbs)
+
+		group := apiGroup
+		if group == "v1" {
+			group = ""
+		}
+
+		key := fmt.Sprintf("%s|%s", group, pluralName)
+		if rule, exists := rulesMap[key]; exists {
+			mergeVerbs(&rule, verbs)
+			rulesMap[key] = rule
+		} else {
+			rule := roleRule{
+				APIGroups: []string{group},
+				Resources: []string{pluralName},
+				Verbs:     verbs,
+			}
+			if includeResourceNames && resourceName != "" {
+				rule.ResourceNames = []string{resourceName}
+			}
+			rulesMap[key] = rule
+		}
+	}
+
+	var rules []roleRule
+	for _, r := range rulesMap {
+		rules = append(rules, r)
+	}
+	return rules
+}
+
+func outputRoleAndBinding(cluster bool, name, namespace string, rules []roleRule, roleBindingSubjects string, roleKind string) {
+	role := roleDefinition{
+		APIVersion: "rbac.authorization.k8s.io/v1",
+		Kind:       roleKind,
+		Metadata: metadata{
+			Name: name,
+		},
+		Rules: rules,
+	}
+
+	if !cluster && namespace != "" {
+		role.Metadata.Namespace = namespace
+	}
+
+	out, err := marshalYAMLWithIndent(role)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "failed to marshal role: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Println(string(out))
+
+	if roleBindingSubjects != "" {
+		subjects, err := parseRoleBindingSubjects(roleBindingSubjects)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "invalid subjects: %v\n", err)
+			os.Exit(1)
+		}
+
+		binding := roleBinding{
+			APIVersion: "rbac.authorization.k8s.io/v1",
+			Kind:       "RoleBinding",
+			Metadata: metadata{
+				Name: name + "-binding",
+			},
+			Subjects: subjects,
+		}
+		if cluster {
+			binding.Kind = "ClusterRoleBinding"
+		}
+		if !cluster && namespace != "" {
+			binding.Metadata.Namespace = namespace
+		}
+		binding.RoleRef = struct {
+			APIGroup string `yaml:"apiGroup"`
+			Kind     string `yaml:"kind"`
+			Name     string `yaml:"name"`
+		}{
+			APIGroup: "rbac.authorization.k8s.io",
+			Kind:     roleKind,
+			Name:     name,
+		}
+
+		bindOut, err := marshalYAMLWithIndent(binding)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "failed to marshal binding: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Println("---")
+		fmt.Println(string(bindOut))
+	}
 }
 
 func main() {
@@ -177,155 +347,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	docs := strings.Split(string(input), "---")
-	rulesMap := map[string]RoleRule{}
-
-	for _, doc := range docs {
-		doc = strings.TrimSpace(doc)
-		if doc == "" {
-			continue
-		}
-
-		var manifest map[string]any
-		if err := yaml.Unmarshal([]byte(doc), &manifest); err != nil {
-			fmt.Fprintf(os.Stderr, "invalid YAML: %v\n", err)
-			continue
-		}
-
-		apiVersionRaw, ok := manifest["apiVersion"].(string)
-		if !ok {
-			continue
-		}
-		apiGroup := strings.Split(apiVersionRaw, "/")[0]
-
-		kindRaw, ok := manifest["kind"].(string)
-		if !ok {
-			continue
-		}
-
-		metadata, ok := manifest["metadata"].(map[string]any)
-		if !ok {
-			continue
-		}
-
-		var resourceName string
-		if nameVal, ok := metadata["name"].(string); ok {
-			resourceName = nameVal
-		}
-
-		var pluralName string
-		var verbs []string
-
-		for _, entry := range sk {
-			if entry.GroupVersion == apiGroup && entry.Kind == kindRaw {
-				pluralName = entry.Name
-				verbs = getVerbsForAccessType(*access, entry.Verbs)
-				break
-			}
-		}
-
-		if pluralName == "" {
-			fmt.Fprintf(os.Stderr, "skipping unknown resource: %s %s\n", apiGroup, kindRaw)
-			continue
-		}
-
-		group := apiGroup
-		if group == "v1" {
-			group = ""
-		}
-
-		key := fmt.Sprintf("%s|%s", group, pluralName)
-		if rule, exists := rulesMap[key]; exists {
-			existingVerbs := make(map[string]bool)
-			for _, v := range rule.Verbs {
-				existingVerbs[v] = true
-			}
-			for _, v := range verbs {
-				if !existingVerbs[v] {
-					rule.Verbs = append(rule.Verbs, v)
-				}
-			}
-			rulesMap[key] = rule
-		} else {
-			rule := RoleRule{
-				APIGroups: []string{group},
-				Resources: []string{pluralName},
-				Verbs:     verbs,
-			}
-			if *includeResourceNames && resourceName != "" {
-				rule.ResourceNames = []string{resourceName}
-			}
-			rulesMap[key] = rule
-		}
-	}
-
-	var rules []RoleRule
-	for _, r := range rulesMap {
-		rules = append(rules, r)
-	}
+	rules := parseManifests(string(input), sk, *access, *includeResourceNames)
 
 	roleKind := "Role"
 	if *cluster {
 		roleKind = "ClusterRole"
 	}
 
-	role := RoleDefinition{
-		APIVersion: "rbac.authorization.k8s.io/v1",
-		Kind:       roleKind,
-		Metadata: Metadata{
-			Name: *name,
-		},
-		Rules: rules,
-	}
-
-	if !*cluster && *namespace != "" {
-		role.Metadata.Namespace = *namespace
-	}
-
-	out, err := marshalYAMLWithIndent(role)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to marshal role: %v\n", err)
-		os.Exit(1)
-	}
-	fmt.Println(string(out))
-
-	if *roleBindingSubjects != "" {
-		subjects, err := parseRoleBindingSubjects(*roleBindingSubjects)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "invalid subjects: %v\n", err)
-			os.Exit(1)
-		}
-
-		binding := RoleBinding{
-			APIVersion: "rbac.authorization.k8s.io/v1",
-			Kind:       "RoleBinding",
-			Metadata: Metadata{
-				Name: *name + "-binding",
-			},
-			Subjects: subjects,
-		}
-		if *cluster {
-			binding.Kind = "ClusterRoleBinding"
-		}
-		if !*cluster && *namespace != "" {
-			binding.Metadata.Namespace = *namespace
-		}
-		binding.RoleRef = struct {
-			APIGroup string `yaml:"apiGroup"`
-			Kind     string `yaml:"kind"`
-			Name     string `yaml:"name"`
-		}{
-			APIGroup: "rbac.authorization.k8s.io",
-			Kind:     roleKind,
-			Name:     *name,
-		}
-
-		bindOut, err := marshalYAMLWithIndent(binding)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "failed to marshal binding: %v\n", err)
-			os.Exit(1)
-		}
-		fmt.Println("---")
-		fmt.Println(string(bindOut))
-	}
+	outputRoleAndBinding(*cluster, *name, *namespace, rules, *roleBindingSubjects, roleKind)
 }
