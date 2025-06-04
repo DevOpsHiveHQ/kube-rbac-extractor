@@ -1,0 +1,86 @@
+name: Go - CI
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint-and-test:
+    name: Lint And Test Code
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+    - uses: actions/setup-go@93397bea11091df50f3d7e59dc26a7711a8bcfbe # v4
+      with:
+        go-version-file: go.mod
+        cache: false
+    - name: Run GolangCI linter
+      uses: golangci/golangci-lint-action@971e284b6050e8a5849b72094c50ab08da042db8 # v6.1.1
+      with:
+        args: '--timeout=5m'
+        skip-cache: true
+        skip-save-cache: true
+    - name: Run Go test coverage
+      run: go test -race -coverprofile=coverage.out -covermode=atomic ./...
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24 # v5
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  build:
+    name: Build Artifacts
+    needs: ["lint-and-test"]
+    permissions:
+      id-token: write
+      contents: write
+      packages: write
+      pull-requests: write
+    uses: ./.github/workflows/tpl-packaging.yml
+    secrets: inherit
+    with:
+      goreleaser-args: "release --clean --snapshot"
+      artifacts-cache: true
+      artifacts-cache-key: "dist-${{ github.run_id }}"
+      artifacts-publish-ci: true
+      artifacts-identifier: "${{ github.event.number == 0 && 'snapshot' || format('pr-{0}', github.event.number) }}"
+
+  upload:
+    name: Upload Artifacts - ${{ matrix.os.name }}
+    needs: ["build"]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+        - name: Linux
+          id: linux
+        - name: MacOS
+          id: darwin
+        - name: Windows
+          id: windows
+    steps:
+    - name: Get Cached Artifacts
+      uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+      with:
+        path: dist
+        key: dist-${{ github.run_id }}
+    - run: find dist
+    # The upload-artifact action doesn't support multi upload with different names.
+    - name: Upload Artifacts - AMD
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      with:
+        name: kube-rbac-extractor-${{ matrix.os.id }}-amd
+        path: |
+          dist/kube-rbac-extractor_*_${{ matrix.os.id }}_amd*
+          dist/*checksums.txt*
+    - name: Upload Artifacts - ARM
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      with:
+        name: kube-rbac-extractor-${{ matrix.os.id }}-arm
+        path: |
+          dist/kube-rbac-extractor_*_${{ matrix.os.id }}_arm*
+          dist/*checksums.txt*

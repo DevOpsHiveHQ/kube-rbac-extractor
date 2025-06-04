@@ -1,0 +1,54 @@
+name: Go - Pre Release
+
+on:
+  push:
+    branches:
+    - main
+
+permissions:
+  contents: read
+
+jobs:
+  pre-release:
+    name: Pre Release
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      packages: write
+      pull-requests: write
+    steps:
+    - name: Run Release Please
+      uses: GoogleCloudPlatform/release-please-action@db8f2c60ee802b3748b512940dde88eabd7b7e01 # v3
+      id: release
+      with:
+        release-type: go
+        package-name: kube-rbac-extractor
+        changelog-types: |
+          [
+            {
+              "type": "feat",
+              "section": "Features",
+              "hidden": false
+            },
+            {
+              "type": "refactor",
+              "section": "Refactors",
+              "hidden": false
+            },
+            {
+              "type": "fix",
+              "section": "Bug Fixes",
+              "hidden": false
+            },
+            {
+              "type": "docs",
+              "section": "Documentation",
+              "hidden": false
+            },
+            {
+              "type": "ci",
+              "section": "Continuous Integration",
+              "hidden": false
+            }
+          ]

@@ -1,0 +1,95 @@
+name: Packaging
+
+on:
+  workflow_call:
+    inputs:
+      goreleaser-version:
+        default: '~> v2'
+        type: string
+      goreleaser-args:
+        required: true
+        type: string
+      artifacts-cache:
+        default: false
+        type: boolean
+      artifacts-identifier:
+        default: latest
+        type: string
+      artifacts-publish-ci:
+        default: false
+        type: boolean
+      artifacts-cache-key:
+        default: dist
+        type: string
+      artifacts-cache-path:
+        default: dist
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    name: Run GoReleaser
+    permissions:
+      id-token: write
+      contents: write
+      packages: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+    - uses: actions/setup-go@93397bea11091df50f3d7e59dc26a7711a8bcfbe # v4
+      with:
+        go-version-file: go.mod
+        cache: false
+    - name: Setup Golang Caches
+      uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+      with:
+        path: |
+          ~/.cache/go-build
+          ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+    - name: Setup Cosign
+      uses: sigstore/cosign-installer@main
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Setup QEMU
+      uses: docker/setup-qemu-action@49b3bc8e6bdd4a60e6116a5414239cba5943d3cf # v3
+    - name: Run GoReleaser
+      uses: goreleaser/goreleaser-action@5742e2a039330cbb23ebf35f046f814d4c6ff811 # v5
+      with:
+        version: "${{ inputs.goreleaser-version }}"
+        args: "${{ inputs.goreleaser-args }}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Cleanup CI Docker Image
+    #   if: ${{ inputs.artifacts-publish-ci }}
+    #   uses: actions/delete-package-versions@e5bc658cc4c965c472efe991f8beea3981499c55 # v5.0.0
+    #   with:
+    #     token: ${{ secrets.GITHUB_TOKEN }}
+    #     package-name: kube-rbac-extractor-ci
+    #     package-type: container
+    #     min-versions-to-keep: 10
+    - name: Publish CI Docker Image
+      if: ${{ inputs.artifacts-publish-ci }}
+      run: |
+        for xarch in amd64 arm64; do
+          docker_image_src="ghcr.io/devopshivehq/kube-rbac-extractor:latest-${xarch}"
+          docker_image_dst="ghcr.io/devopshivehq/kube-rbac-extractor-ci:${{ inputs.artifacts-identifier }}-${xarch}"
+          echo "Tag and push image: ${docker_image_dst}"
+          docker tag ${docker_image_src} ${docker_image_dst}
+          docker push ${docker_image_dst}
+        done
+    - name: Cache Artifacts
+      uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+      if: ${{ inputs.artifacts-cache }}
+      with:
+        path: "${{ inputs.artifacts-cache-path }}"
+        key: "${{ inputs.artifacts-cache-key }}"
