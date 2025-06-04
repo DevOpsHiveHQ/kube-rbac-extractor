@@ -28,9 +28,10 @@ type Metadata struct {
 }
 
 type RoleRule struct {
-	APIGroups []string `yaml:"apiGroups"`
-	Resources []string `yaml:"resources"`
-	Verbs     []string `yaml:"verbs"`
+	APIGroups     []string `yaml:"apiGroups"`
+	Resources     []string `yaml:"resources"`
+	ResourceNames []string `yaml:"resourceNames,omitempty"`
+	Verbs         []string `yaml:"verbs"`
 }
 
 type RoleDefinition struct {
@@ -111,6 +112,7 @@ func main() {
 	name := flag.String("name", "access", "Metadata name for the Role/ClusterRole")
 	namespace := flag.String("namespace", "", "Namespace for Role (ignored for ClusterRole)")
 	extraSchemaPath := flag.String("extra-schema", "", "Path to extra kinds RBAC schema JSON file for custom resources")
+	includeResourceNames := flag.Bool("resource-names", false, "Include resourceNames from input resources")
 	flag.Parse()
 
 	sk, err := loadSchemaKindsRBAC(schemaKindsJSON, *extraSchemaPath)
@@ -172,6 +174,15 @@ func main() {
 			group = ""
 		}
 
+		resourceName := ""
+		if *includeResourceNames {
+			if metadata, ok := manifest["metadata"].(map[string]any); ok {
+				if nameVal, ok := metadata["name"].(string); ok {
+					resourceName = nameVal
+				}
+			}
+		}
+
 		key := fmt.Sprintf("%s|%s", group, pluralName)
 		if rule, exists := rulesMap[key]; exists {
 			// Merge verbs
@@ -184,13 +195,27 @@ func main() {
 					rule.Verbs = append(rule.Verbs, v)
 				}
 			}
+			// Merge resource names
+			if resourceName != "" {
+				existingNames := make(map[string]bool)
+				for _, n := range rule.ResourceNames {
+					existingNames[n] = true
+				}
+				if !existingNames[resourceName] {
+					rule.ResourceNames = append(rule.ResourceNames, resourceName)
+				}
+			}
 			rulesMap[key] = rule
 		} else {
-			rulesMap[key] = RoleRule{
+			rule := RoleRule{
 				APIGroups: []string{group},
 				Resources: []string{pluralName},
 				Verbs:     verbs,
 			}
+			if resourceName != "" {
+				rule.ResourceNames = []string{resourceName}
+			}
+			rulesMap[key] = rule
 		}
 	}
 
