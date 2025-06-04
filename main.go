@@ -332,10 +332,11 @@ func main() {
 	namespace := flag.String("namespace", "", "Namespace for Role (ignored for ClusterRole)")
 	extraSchemaPath := flag.String("extra-schema", "", "Path to extra kinds RBAC schema JSON file for custom resources")
 	includeResourceNames := flag.Bool("resource-names", false, "Include resourceNames from manifest metadata.name in the rules")
-	roleBindingSubjects := flag.String("role-binding-subjects", "", "Comma-separated list of subjects to bind the role to (e.g., User:alice,Group:devs,ServiceAccount:ns:sa)")
+	generateRoleBindingSubjects := flag.String("role-binding-subjects", "",
+		"Generate RoleBinding/ClusterRoleBinding using comma-separated list of subjects to bind the role to (e.g., User:alice,Group:devs,ServiceAccount:ns:sa)")
 	flag.Parse()
 
-	sk, err := loadSchemaKindsRBAC(schemaKindsJSON, *extraSchemaPath)
+	schemaKinds, err := loadSchemaKindsRBAC(schemaKindsJSON, *extraSchemaPath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to load kinds RBAC schema data: %v\n", err)
 		os.Exit(1)
@@ -347,12 +348,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	rules := parseManifests(string(input), sk, *access, *includeResourceNames)
+	rules := parseManifests(string(input), schemaKinds, *access, *includeResourceNames)
 
 	roleKind := "Role"
 	if *cluster {
 		roleKind = "ClusterRole"
 	}
 
-	outputRoleAndBinding(*cluster, *name, *namespace, rules, *roleBindingSubjects, roleKind)
+	outputRoleAndBinding(*cluster, *name, *namespace, rules, *generateRoleBindingSubjects, roleKind)
 }

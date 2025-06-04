@@ -28,6 +28,14 @@ For some use cases when a tight security access is required, users should only h
 
 For example, you can use `kube-rbac-extractor` to limit the user's access to the kinds used in a specific Helm chart.
 
+## Installation
+
+Download pre-compiled binary from [GitHub releases](https://github.com/DevOpsHiveHQ/kube-rbac-extractor/releases) page, or use Docker image:
+
+```
+ghcr.io/devopshivehq/kube-rbac-extractor:latest
+```
+
 ## Usage
 
 ```
@@ -37,11 +45,16 @@ Usage of kube-rbac-extractor:
   --cluster
     	Generate ClusterRole instead of Role
   --extra-schema string
-    	Path to extra kinds schema RBAC JSON file for custom resources
+    	Path to extra kinds RBAC schema JSON file for custom resources
   --name string
     	Metadata name for the Role/ClusterRole (default "access")
   --namespace string
     	Namespace for Role (ignored for ClusterRole)
+  --resource-names
+    	Include resourceNames from manifest metadata.name in the rules
+  --role-binding-subjects string
+    	Generate RoleBinding/ClusterRoleBinding using comma-separated list of subjects to bind the role to
+      (e.g., User:alice,Group:devs,ServiceAccount:ns:sa)
 ```
 
 ## Example
