@@ -1,7 +1,7 @@
 <div align="center">
   <p align="center">
     <a href="https://github.com/DevOpsHiveHQ/kube-rbac-extractor" style="display: block; padding: 1em 0;">
-      <img width="265px" alt="Kustomize Merger Logo" border="0" src="img/kube-rbac-extractor-logo.svg"/>
+      <img width="265px" alt="K8s RBAC Extractor Logo" border="0" src="img/kube-rbac-extractor-logo.svg"/>
     </a>
   </p>
 
@@ -10,6 +10,14 @@
   <p><b>
   A CLI tool generates Kubernetes RBAC Role/ClusterRole from K8s resources (manifests), applying the principle of least privilege (PoLP) for restricted security access.
   </b></p>
+
+[![CI](https://img.shields.io/github/actions/workflow/status/DevOpsHiveHQ/kube-rbac-extractor/.github%2Fworkflows%2Fgo-ci.yml?logo=github&label=CI&color=31c653)](https://github.com/DevOpsHiveHQ/kube-rbac-extractor/actions/workflows/go-ci.yml?query=branch%3Amain)
+[![Go Report Card](https://goreportcard.com/badge/github.com/DevOpsHiveHQ/kube-rbac-extractor)](https://goreportcard.com/report/github.com/DevOpsHiveHQ/kube-rbac-extractor)
+[![GitHub Release](https://img.shields.io/github/v/release/DevOpsHiveHQ/kube-rbac-extractor?logo=github)](https://github.com/DevOpsHiveHQ/kube-rbac-extractor/releases)
+[![Docker](https://img.shields.io/badge/Docker-available-blue?logo=docker&logoColor=white)](https://github.com/DevOpsHiveHQ/kube-rbac-extractor/pkgs/container/kustomize-generator-merger)
+[![Go Reference](https://pkg.go.dev/badge/github.com/DevOpsHiveHQ/kube-rbac-extractor.svg)](https://pkg.go.dev/github.com/DevOpsHiveHQ/kube-rbac-extractor)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/DevOpsHiveHQ/kube-rbac-extractor/pulls)
+
 </div>
 
 ## Why?
